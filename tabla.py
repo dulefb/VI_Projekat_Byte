@@ -98,6 +98,7 @@ class Tabla:
     
     def odigrajPotez(this,potez,igrac):
         #IGRAC JE ZADAT SA X ili O
+        #POTEZ JE OBLIKA [<vrsta> <kolona> <broj_figura> <smer>]
         novaTabla=this.vrste.copy()
         if not this.potezIsValid(potez):
             return False

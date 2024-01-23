@@ -16,7 +16,7 @@ def unosDimenzija():
     
     return broj
 
-def unosPoteza(tabla:Tabla,igrac):
+def unosPoteza(tabla:Tabla):
     print("Unesi potez:<Vrsta> <Kolona> <Broj_figura> <Smer>")
     nInput=None
     broj=0
@@ -26,7 +26,8 @@ def unosPoteza(tabla:Tabla,igrac):
         if(len(newN)!=4):
             print("Unesite validan potez")
         else:
-            if tabla.potezIsValid(newN,igrac):
+            if tabla.potezIsValid(newN):
                 return newN
             else:
                 print("Unesite validan potez")
+        tabla.prikaziTablu()
