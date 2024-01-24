@@ -34,7 +34,7 @@ class Tabla:
             for i in range(0,this.n):
                 for j in range(0,8):
                     if (x%2==1 and i%2==0) or (x%2==0 and i%2==1):
-                        prikazKolone+=f"{this.vrste[chr(x)][i][j]}"
+                        prikazKolone+=f"{this.vrste[chr(x)][i][j-1]}"
                     else:
                         prikazKolone+=f"{' '}"
             prikazVrste+=prikazKolone
@@ -55,8 +55,8 @@ class Tabla:
         
     def potezIsValid(this,potez):
         if(potez[0] in [chr(x) for x in range(this.pomeraj,this.pomeraj+this.n)] and 
-           potez[1] in range(0,this.n) and
-           int(potez[2])>0 and int(potez[2])<8
+           int(potez[1]) in range(0,this.n) and
+           int(potez[2])>=0 and int(potez[2])<8
            and potez[3] in ['GD','GL','DD','DL']):
             return True
         else:
@@ -74,22 +74,22 @@ class Tabla:
             validniPotezi={}
             foundValidPotez=False
             #GORE LEVO
-            if this.checkStackOnPlace(chr(ord(potez[0])-1),potez[1]-1,potez[2]):
-                validniPotezi['GL']=[chr(ord(potez[0])-1),potez[1]-1]
+            if this.checkStackOnPlace(chr(ord(potez[0])-1),int(potez[1])-2,int(potez[2])):
+                validniPotezi['GL']=[chr(ord(potez[0])-1),int(potez[1])-2]
                 foundValidPotez=True
             #GORE DESNO
-            if this.checkStackOnPlace(chr(ord(potez[0])-1),potez[1]+1,potez[2]):
-                validniPotezi['GD']=[chr(ord(potez[0])-1),potez[1]+1]
+            if this.checkStackOnPlace(chr(ord(potez[0])-1),int(potez[1]),int(potez[2])):
+                validniPotezi['GD']=[chr(ord(potez[0])-1),int(potez[1])]
                 foundValidPotez=True
             
             #DOLE LEVO
-            if this.checkStackOnPlace(chr(ord(potez[0])+1),potez[1]-1,potez[2]):
-                validniPotezi['DL']=[chr(ord(potez[0])+1),potez[1]-1]
+            if this.checkStackOnPlace(chr(ord(potez[0])+1),int(potez[1])-2,int(potez[2])):
+                validniPotezi['DL']=[chr(ord(potez[0])+1),int(potez[1])-2]
                 foundValidPotez=True
             
             #DOLE DESNO
-            if this.checkStackOnPlace(chr(ord(potez[0])+1),potez[1]+1,potez[2]):
-                validniPotezi['DD']=[chr(ord(potez[0])+1),potez[1]+1]
+            if this.checkStackOnPlace(chr(ord(potez[0])+1),int(potez[1]),int(potez[2])):
+                validniPotezi['DD']=[chr(ord(potez[0])+1),int(potez[1])]
                 foundValidPotez=True
 
             if foundValidPotez:
@@ -104,25 +104,25 @@ class Tabla:
             return False
         
         index=0
-        currentField = this.vrste[potez[0]][potez[1]].copy()
+        currentField = this.vrste[potez[0]][int(potez[1])].copy()
         currentField.reverse()
         for x in currentField:
             if x=='X' or x=='O':
                 index+=1
-        if currentField[index]!=igrac:
-            return False
+        #if currentField[index]!=igrac:
+            #return False
         
         validniPotezi = this.checkClosePlacesAndReturnValidPotez(potez)
-        if validniPotezi[potez[3]]:
+        if len(validniPotezi)>0:
             vrsta=validniPotezi[potez[3]][0]
             kolona=validniPotezi[potez[3]][1]
             #FIGURE KOJE SE POMERAJU
             elementsToMove=[]
-            for i in range(0,potez[2]):
-                elementsToMove.append(this.vrste[potez[0]][potez[1]].pop())
-                this.vrste[potez[0]][potez[1]].reverse()
-                this.vrste[potez[0]][potez[1]].append('.')
-                this.vrste[potez[0]][potez[1]].reverse()
+            for i in range(0,int(potez[2])):
+                elementsToMove.append(this.vrste[potez[0]][int(potez[1])].pop())
+                this.vrste[potez[0]][int(potez[1])].reverse()
+                this.vrste[potez[0]][int(potez[1])].append('.')
+                this.vrste[potez[0]][int(potez[1])].reverse()
             
             #FIGURE KOJE TREBA VRATITI
             elements=[]
@@ -138,3 +138,5 @@ class Tabla:
 
             this.vrste=novaTabla
             return True
+        else: 
+            return False

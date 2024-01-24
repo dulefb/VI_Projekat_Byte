@@ -19,8 +19,8 @@ def unosDimenzija():
 def unosPoteza(tabla:Tabla):
     print("Unesi potez:<Vrsta> <Kolona> <Broj_figura> <Smer>")
     nInput=None
-    broj=0
-    while True:
+    valid = False
+    while not valid:
         nInput=input()
         newN = nInput.split(" ")
         if(len(newN)!=4):
@@ -30,4 +30,3 @@ def unosPoteza(tabla:Tabla):
                 return newN
             else:
                 print("Unesite validan potez")
-        tabla.prikaziTablu()
